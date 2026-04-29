@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-[#032366]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guardianes Awards 2026 | Colegio Gran Bretaña</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.cdnfonts.com/css/century-gothic" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Century Gothic', sans-serif; background-color: #032366; color: #e2e8f0; min-height: 100vh; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        .brand-gradient { background: linear-gradient(135deg, #ea7125 0%, #f89d62 50%, #c25916 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .award-card, .teacher-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(234, 113, 37, 0.1); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .award-card:not(.voted):hover, .teacher-card:not(.voted):hover { transform: translateY(-8px); border-color: rgba(234, 113, 37, 0.5); box-shadow: 0 10px 30px -10px rgba(234, 113, 37, 0.3); }
+        .award-card.selected { border-color: #ea7125 !important; background: rgba(234, 113, 37, 0.25) !important; transform: scale(1.05); }
+        .teacher-card.voted { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .shimmer { background: linear-gradient(90deg, #ea7125, #f89d62, #ea7125); background-size: 200% auto; animation: shine 2s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
+        .mascot-sphere { border: 2px solid #ea7125; background: #fff; border-radius: 9999px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(234, 113, 37, 0.3); }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .animate-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+        .splash-exit-anim { animation: fadeOut 0.8s forwards; }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        .section-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col" ontouchstart="">
+
+    <!-- PANTALLA DE CARGA -->
+    <section id="splash-screen" class="fixed inset-0 z-[300] bg-[#032366] flex flex-col items-center justify-center">
+        <div class="w-32 h-32 animate-heartbeat"><img src="guardianes.png" class="w-full h-auto" alt="Escudo"></div>
+        <p class="text-[#ea7125] text-xs mt-10 uppercase tracking-[0.4em] font-bold animate-pulse text-center">Iniciando Gala...</p>
+    </section>
+
+    <!-- Reproductor de Audio -->
+    <audio id="bg-music" loop><source src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=cinematic-time-lapse-115672.mp3" type="audio/mpeg"></audio>
+
+    <nav id="main-nav" class="hidden sticky top-0 z-50 glass-panel px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2"><div class="w-8 h-8 mascot-sphere"><img src="guardianes.png" class="w-6 h-6 object-contain" alt="G"></div><h1 class="text-sm md:text-xl font-bold uppercase text-white">Guardianes <span class="brand-gradient">Awards</span></h1></div>
+        <div class="flex items-center space-x-3">
+            <div id="staff-tabs" class="hidden flex space-x-2 border-r border-slate-700 pr-3 md:pr-6"><button onclick="window.showTeachers()" class="text-[9px] uppercase tracking-widest text-white">Votar</button><button onclick="window.showDashboard()" class="text-[9px] uppercase tracking-widest text-[#ea7125] font-bold">Admin</button></div>
+            <p id="nav-user-email" class="text-[9px] text-white truncate max-w-[100px]"></p>
+            <button onclick="window.exitApp()" class="text-[8px] bg-red-500/10 text-red-400 px-2 py-1.5 rounded border border-red-500/30 uppercase">Salir</button>
+        </div>
+    </nav>
+
+    <main id="app-container" class="w-full flex-grow flex flex-col items-center">
+        <!-- INTRO -->
+        <section id="intro-screen" class="fixed inset-0 z-[100] flex flex-col items-center bg-[#032366] overflow-y-auto">
+            <div class="intro-content-wrapper animate-fade-in w-full flex flex-col items-center py-10 px-6 text-center">
+                <div class="w-56 mb-8 bg-white p-4 rounded-2xl shadow-lg flex justify-center items-center"><img src="Logo.png" alt="CGB" class="w-full h-auto" onerror="this.src='https://via.placeholder.com/400x120.png?text=Logo+CGB'"></div>
+                <div class="space-y-4 mb-8"><p class="text-slate-400 text-xs md:text-lg uppercase tracking-[0.3em] font-light">Bienvenidos a los</p><h2 class="text-3xl md:text-5xl font-black brand-gradient uppercase tracking-tight italic">Guardianes Awards</h2></div>
+                <button onclick="window.openCurtain()" class="shimmer bg-[#ea7125] text-white font-black py-4 px-10 rounded-full my-8 uppercase tracking-widest transform hover:scale-105 transition-all text-center">ABRIR TELÓN</button>
+                <div class="mt-12 text-center"><p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Innovación Tecnológica | By Arturo Palacios</p></div>
+            </div>
+        </section>
+
+        <!-- SELECCIÓN ÁREA -->
+        <section id="level-selection-screen" class="hidden section-container animate-fade-in text-center py-8">
+            <h2 class="text-2xl font-black brand-gradient mb-10 uppercase">Selecciona tu Área</h2>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div onclick="window.selectLevel('Preescolar')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center">
+                    <div class="w-16 h-16 mascot-sphere mb-3"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Preescolar</p>
+                </div>
+                <div onclick="window.selectLevel('Primaria')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center">
+                    <div class="w-16 h-16 mascot-sphere mb-3"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Primaria</p>
+                </div>
+                <div onclick="window.selectLevel('Secundaria')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center">
+                    <div class="w-16 h-16 mascot-sphere mb-3"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Secundaria</p>
+                </div>
+                <div onclick="window.selectLevel('Bachillerato')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center">
+                    <div class="w-16 h-16 mascot-sphere mb-3"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Bachillerato</p>
+                </div>
+                <div onclick="window.selectLevel('Administrativos')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center">
+                    <div class="w-16 h-16 mascot-sphere mb-3"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Administración</p>
+                </div>
+                <div onclick="window.selectLevel('Intendencia y mantenimiento')" class="level-card glass-panel p-6 rounded-3xl flex flex-col items-center border-orange-500/40">
+                    <div class="w-16 h-16 mascot-sphere mb-3 border-orange-500"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                    <p class="text-xs uppercase font-black">Intendencia y<br>mantenimiento</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGIN -->
+        <section id="login-screen" class="hidden section-container animate-fade-in py-12 text-center">
+            <div class="max-w-md mx-auto glass-panel p-8 rounded-3xl mt-4">
+                <div class="w-20 h-20 mascot-sphere mx-auto mb-6"><img src="guardianes.png" class="w-12 h-12 object-contain"></div>
+                <h2 id="login-level-title" class="text-xl font-black text-white uppercase mb-8">Guardianes Awards</h2>
+                <input type="email" id="student-email" placeholder="correo@cgb.edu.mx" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-4 px-4 text-center text-white mb-4 outline-none focus:border-[#ea7125]">
+                <input type="password" id="staff-password" placeholder="Clave Staff" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-4 px-4 text-center text-white mb-4 hidden outline-none focus:border-[#ea7125]">
+                <p id="login-error" class="text-red-400 text-xs mb-4 hidden uppercase font-bold text-center"></p>
+                <button id="login-btn" onclick="window.handleLogin()" class="w-full bg-[#ea7125] text-white font-black py-4 rounded-xl uppercase shadow-lg">INGRESAR</button>
+                <button id="back-to-email-btn" onclick="window.resetLoginForm()" class="text-[10px] text-slate-400 mt-4 hidden uppercase font-bold underline">Cambiar Correo</button>
+            </div>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard-screen" class="hidden section-container animate-fade-in py-6">
+            <div class="flex justify-between items-center mb-8"><h2 class="text-2xl font-black brand-gradient uppercase italic">Panel Admin</h2><button id="btn-refresh-dashboard" onclick="window.refreshDashboard()" class="bg-blue-500/20 text-blue-400 text-[10px] px-4 py-2 rounded font-bold uppercase">Actualizar</button></div>
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="glass-panel p-4 rounded-2xl border-l-4 border-[#ea7125] text-center"><p class="text-[9px] uppercase text-slate-500 font-bold">Votos</p><p id="stat-total-votes" class="text-2xl font-black text-white">0</p></div>
+                <div class="glass-panel p-4 rounded-2xl border-l-4 border-green-500 text-center"><p class="text-[9px] uppercase text-slate-500 font-bold">Estado</p><p class="text-xl font-black text-green-500 uppercase">Online</p></div>
+            </div>
+            <div id="marketing-charts-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+        </section>
+
+        <!-- TEACHERS -->
+        <section id="teachers-screen" class="hidden section-container animate-fade-in py-6 text-center">
+            <div class="mb-6 flex justify-between items-end border-b border-white/5 pb-4">
+                <div class="text-left"><h3 class="text-lg md:text-2xl font-black text-white uppercase italic">Elegir <span class="brand-gradient">Guardián</span></h3></div>
+                <span id="voted-count" class="text-xs font-bold text-[#ea7125] bg-slate-800 px-3 py-1 rounded">0 nominaciones</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pb-32" id="teachers-grid"></div>
+            <div id="final-submit-container" class="hidden fixed bottom-6 left-6 right-6 z-40"><button onclick="window.finalizeVotation()" class="shimmer bg-[#ea7125] text-white font-black py-4 px-8 rounded-2xl shadow-xl uppercase w-full max-w-md mx-auto">ENVIAR NOMINACIONES</button></div>
+        </section>
+
+        <!-- CATEGORIES -->
+        <section id="categories-screen" class="hidden section-container animate-fade-in py-6">
+            <button onclick="window.showTeachers()" class="text-slate-400 flex items-center text-[10px] uppercase font-bold mb-6"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"></path></svg> Regresar</button>
+            <div class="mb-8 p-6 glass-panel rounded-3xl text-center">
+                <div class="w-16 h-16 mascot-sphere mx-auto mb-4 border-[#d4af37]"><img src="guardianes.png" class="w-10 h-10 object-contain"></div>
+                <h3 id="selected-teacher-name" class="text-xl font-black uppercase text-white brand-gradient">Nombre</h3>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pb-32" id="categories-grid"></div>
+        </section>
+
+        <!-- SUCCESS -->
+        <section id="success-screen" class="hidden section-container py-20 text-center animate-fade-in"><h2 class="text-2xl font-black text-white uppercase italic mb-6">Voto Almacenado</h2><button onclick="window.showTeachers()" class="bg-[#ea7125] text-white font-black py-4 px-12 rounded-xl uppercase">Siguiente Guardián</button></section>
+
+        <!-- FINAL -->
+        <section id="final-screen" class="hidden section-container py-20 text-center animate-fade-in text-center"><h2 class="text-4xl font-black brand-gradient uppercase italic mb-8">¡Gracias Guardián!</h2><div class="max-w-md mx-auto glass-panel p-8 rounded-3xl"><p id="final-user-email" class="font-bold text-[#ea7125] mb-2"></p><p class="text-slate-500 text-[10px] uppercase font-bold">Colegio Gran Bretaña</p></div><button onclick="window.exitApp()" class="mt-10 bg-red-500/10 text-red-400 font-bold py-4 px-12 rounded-full border border-red-500/30 uppercase">Cerrar Sesión</button></section>
+    </main>
+
+    <!-- BOTON FLOTANTE -->
+    <div id="floating-btn-container" class="fixed left-0 w-full z-[9999] flex justify-center transition-all duration-300 bg-gradient-to-t from-[#032366] to-transparent pt-12" style="bottom: -150px; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));">
+        <button id="confirm-selection-btn" onclick="window.saveVotesToCloud()" class="bg-[#ea7125] text-white font-black py-4 px-10 md:py-5 md:px-12 rounded-full shadow-lg uppercase text-sm tracking-widest w-[85%] max-w-xs text-center shimmer" disabled>CONFIRMAR VOTO</button>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURACIÓN DE URL (ACTUALIZA AQUÍ)
+        // ==========================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxv8Dz-BcbG9k0mO0UNo40KQ9kdjcVMZVwOUtzlxbI3lHZIzeU7oxOVIYmXSJWiF2yo/exec"; 
+
+        const shieldSVG = `<svg class="w-full h-full p-2 text-[#d4af37]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 12c-2.67 0-5-1.33-5-4 0-1.11.44-2.11 1.16-2.84.97.97 2.29 1.57 3.84 1.57 1.55 0 2.87-.6 3.84-1.57.72.73 1.16 1.73 1.16 2.84 0 2.67-2.33 4-5 4z"/></svg>`;
+        
+        const config = {
+            categories: {
+                'Preescolar': [{id:101,title:"Guardián Creativo",icon:"🎨"},{id:102,title:"Guardián Amoroso",icon:"💖"},{id:103,title:"Guardián Responsable",icon:"✅"},{id:104,title:"Guardián Empático",icon:"🤝"},{id:105,title:"Guardián Positivo",icon:"🌞"},{id:106,title:"Guardián Paciente",icon:"⏳"},{id:107,title:"Guardián Inspirador",icon:"✨"},{id:108,title:"Guardián Comprometido",icon:"🔥"},{id:109,title:"Guardián Servicial",icon:"🤲"},{id:110,title:"Guardián Alegre",icon:"😄"}],
+                'Primaria': [{id:801,title:"Guardián Puntual",icon:"⏰"},{id:802,title:"Guardián Amable",icon:"😊"},{id:803,title:"Guardián Empático",icon:"❤️"},{id:804,title:"Guardián Innovador",icon:"💡"},{id:805,title:"Guardián Servicial",icon:"🤲"},{id:806,title:"Guardián Resolutivo",icon:"🛠️"},{id:807,title:"Guardián Creativo",icon:"🎨"},{id:808,title:"Guardián Motivador",icon:"✨"},{id:809,title:"Guardián Enérgico",icon:"⚡"},{id:810,title:"Guardián Paciente",icon:"⏳"}],
+                'Secundaria': [{id:201,title:"Guardián Puntual",icon:"⏰"},{id:202,title:"Guardián Amable",icon:"😊"},{id:203,title:"Guardián Mentor",icon:"📖"},{id:204,title:"Guardián Creativo",icon:"🚀"},{id:205,title:"Guardián Estructurado",icon:"📋"},{id:206,title:"Guardián Resolutivo",icon:"🛠️"},{id:207,title:"Guardián Empático",icon:"❤️"},{id:208,title:"Guardián Inspirador",icon:"✨"}],
+                'Bachillerato': [{id:301,title:"Guardián Innovador",icon:"💡"},{id:302,title:"Guardián Tecnológico",icon:"💻"},{id:303,title:"Guardián Dinámico",icon:"⚡"},{id:304,title:"Guardián Analítico",icon:"📊"},{id:305,title:"Guardián Puntual",icon:"⏰"},{id:306,title:"Guardián Integrador",icon:"🧩"},{id:307,title:"Guardián Entusiasta",icon:"🎉"},{id:308,title:"Guardián Mediador",icon:"⚖️"},{id:309,title:"Guardián Solidario",icon:"🤝"},{id:310,title:"Guardián Íntegro",icon:"🛡️"}],
+                'Administrativos': [{id:501,title:"Guardián Comprometido",icon:"💪"},{id:502,title:"Guardián Disciplinada",icon:"🎯"},{id:503,title:"Guardián Dispuesto",icon:"🙋"},{id:504,title:"Guardián Amable",icon:"😊"},{id:505,title:"Guardián Organizado",icon:"📋"},{id:506,title:"Guardián Puntual",icon:"⏰"},{id:507,title:"Guardián Empático",icon:"🤝"},{id:508,title:"Guardián Paciente",icon:"⏳"},{id:509,title:"Guardián Proactivo",icon:"🚀"},{id:510,title:"Guardián Eficiente",icon:"⚡"}],
+                'Intendencia y mantenimiento': [{id:601,title:"Guardián Comprometido",icon:"💪"},{id:602,title:"Guardián Generoso",icon:"🤲"},{id:603,title:"Guardián Colaborativo",icon:"🤝"},{id:604,title:"Guardián Amable",icon:"😊"},{id:605,title:"Guardián Servicial",icon:"🛠️"}],
+                'Default': [{id:901,title:"Excelencia",icon:"🏆"}]
+            },
+            teachers: {
+                'Preescolar': [{id:401,name:"Miss Vivi"},{id:402,name:"Miss Liz"},{id:403,name:"Miss Pau"},{id:404,name:"Miss Nelly"},{id:405,name:"Miss Yess"},{id:406,name:"Miss Fanny"},{id:407,name:"Miss Jenny"},{id:408,name:"Miss Susy"},{id:409,name:"Miss Dayana"},{id:410,name:"Miss Cintia"},{id:411,name:"Prof. Julio"},{id:412,name:"Prof. Chema"},{id:413,name:"Miss Vero"}],
+                'Primaria': [{id:101,name:"Heryca Natalia Colmenares"},{id:102,name:"Maria Margarita Cervantes"},{id:103,name:"Lucero Contreras Estrella"},{id:104,name:"Alitzel Pérez Trejo"},{id:105,name:"Mayela Dorantes"},{id:106,name:"Ibette Flores"},{id:107,name:"Guadalupe Garfias"},{id:108,name:"Andrea Gomez"},{id:109,name:"Diana Laura Gonzalez"},{id:110,name:"Claudia Hernandez"},{id:111,name:"Silvia Martinez"},{id:112,name:"Alejandra Ramirez"},{id:113,name:"Gabriela Ramirez"},{id:114,name:"Cintia Reyes"},{id:115,name:"Olga Elizabeth Reyes"},{id:116,name:"David Sánchez Rodríguez"},{id:117,name:"Yessica Servin"},{id:118,name:"Katya Silva"},{id:119,name:"Mariana Ledesma"},{id:120,name:"Antonio Estrada"},{id:121,name:"Yaritza Ordaz"},{id:122,name:"Pilar Pérez"},{id:123,name:"Ricardo López"},{id:124,name:"Julio César Rosas"},{id:125,name:"Thania Torres"},{id:126,name:"Estephani Martínez"},{id:127,name:"Estefany Vazquez"},{id:128,name:"Miriam Valdez"}],
+                'Secundaria': [{id:201,name:"Alejandra Yaritza Ordaz"},{id:202,name:"Andrea Gómez"},{id:203,name:"Arturo Palacios González"},{id:204,name:"Beatriz Rodriguez"},{id:205,name:"Bibiana Soto"},{id:206,name:"Brenda Ramírez"},{id:207,name:"Cecilia Ramírez"},{id:208,name:"Diana Gonzalez"},{id:209,name:"Francisco Córdova"},{id:210,name:"Israel Pescador"},{id:211,name:"Ivonne Valdez"},{id:212,name:"Jorge Enrique Vargas"},{id:213,name:"José Antonio Estrada"},{id:214,name:"Karla Morales"},{id:215,name:"Laura Badillo"},{id:216,name:"Pilar Pérez"},{id:217,name:"Fernanda Velazquez"},{id:218,name:"Mariana Ledesma"},{id:219,name:"Nadya Beltrán"},{id:220,name:"Paulina Juárez"},{id:221,name:"Ricardo López"},{id:222,name:"Saraí González"},{id:223,name:"Saraí Jocabed Gutiérrez"},{id:224,name:"Talia Mejía"},{id:225,name:"Thania Torres"},{id:226,name:"Zeidy Ramírez"},{id:227,name:"Homero Mendoza"}],
+                'Bachillerato': [{id:301,name:"Aguilar Belmontes Maritza"},{id:302,name:"López Rojas Alejandra Denisse"},{id:303,name:"Claudia Pacheco"},{id:304,name:"De la Torre González Eréndira Anaí"},{id:305,name:"Gerardo Medellín"},{id:306,name:"Citlalli Miranda"},{id:307,name:"Luis Felipe Rodríguez"},{id:308,name:"Beatriz Adriana Muñoz"},{id:309,name:"Miguel Angel Morales"},{id:310,name:"Sarai Jocabed Gutierrez"},{id:311,name:"Rebeca Sainz"},{id:312,name:"Jorge Vargas"},{id:313,name:"Ricardo López"},{id:314,name:"Juan Fernando Galván"},{id:315,name:"José Antonio Estrada"},{id:316,name:"Ordaz Vega Alejandra Yaritza"},{id:317,name:"Andrea Gomez"},{id:318,name:"Mariana Ledesma"},{id:319,name:"Emma Guerrero"},{id:320,name:"Diana González"},{id:321,name:"Pilar Perez"},{id:322,name:"Carmen Morales"},{id:323,name:"Irving Spíndola"},{id:324,name:"Rodrigo Mendiola"},{id:325,name:"Francisco Javier Córdova"},{id:326,name:"Beatriz Rodríguez"},{id:328,name:"Karla Morales"}],
+                'Administrativos': [{id:501,name:"Marichuy"},{id:502,name:"Diana"},{id:503,name:"Sergio"},{id:504,name:"Brenda"},{id:505,name:"Ale"},{id:506,name:"Litsy"},{id:507,name:"Jessy"},{id:508,name:"Eri"},{id:509,name:"Bea"},{id:510,name:"Graciela"},{id:511,name:"Aline"},{id:512,name:"Cristi"},{id:513,name:"Liss"},{id:514,name:"Emma"},{id:515,name:"Rach"},{id:516,name:"Verónica Torres"},{id:517,name:"Heryca Colmenares"},{id:518,name:"Homero Mendoza"},{id:519,name:"Irving Spindola"}],
+                'Intendencia y mantenimiento': [{id:601,name:"Luis"},{id:602,name:"Memo"},{id:603,name:"Judith"},{id:604,name:"Lot"},{id:605,name:"Jorge"},{id:606,name:"Eri"},{id:607,name:"Duli"},{id:608,name:"Mary"},{id:609,name:"Paty"}]
+            },
+            adminEmails: ['arturo.palacios@cgb.edu.mx'], marketingEmails: ['marketing@cgb.edu.mx'],
+            passwords: { 'arturo.palacios@cgb.edu.mx': 'adminCGB', 'marketing@cgb.edu.mx': 'mktCGB' }
+        };
+
+        let cloudVotes = []; let votedTeacherIds = JSON.parse(localStorage.getItem('cgb_voted_teachers')) || [];
+        let userEmail = localStorage.getItem('cgb_user_email') || ''; let userLevel = localStorage.getItem('cgb_user_level') || '';
+        let selectedTeacherId = null; let selectedCategoriesForCurrentTeacher = []; let currentLoginStep = 1; let pendingEmail = '';
+
+        window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.getElementById('splash-screen').classList.add('splash-exit-anim'); }, 2500); if (userEmail && userLevel) { document.getElementById('intro-screen').classList.add('hidden'); setupUserRole(userEmail); } });
+        
+        window.openCurtain = () => { try{document.getElementById('bg-music').play();}catch(e){} document.getElementById('intro-screen').classList.add('hidden'); document.getElementById('level-selection-screen').classList.remove('hidden'); window.scrollTo(0,0); };
+        window.selectLevel = (l) => { userLevel = l; localStorage.setItem('cgb_user_level', l); document.getElementById('login-level-title').innerText = `Guardianes ${l}`; hideAll(); document.getElementById('login-screen').classList.remove('hidden'); };
+        
+        window.handleLogin = async () => {
+            const eInp = document.getElementById('student-email'); const input = eInp.value.trim().toLowerCase();
+            const pInp = document.getElementById('staff-password'); const btn = document.getElementById('login-btn'); const err = document.getElementById('login-error');
+            if (currentLoginStep === 1) {
+                if (config.adminEmails.includes(input) || config.marketingEmails.includes(input)) { pendingEmail = input; eInp.classList.add('hidden'); pInp.classList.remove('hidden'); btn.innerText = "ACCESO STAFF"; currentLoginStep = 2; document.getElementById('back-to-email-btn').classList.remove('hidden'); }
+                else if (input.includes('@cgb.edu.mx')) { await finalizeLogin(input); } else { err.innerText = "Correo institucional no válido"; err.classList.remove('hidden'); }
+            } else { if (pInp.value === config.passwords[pendingEmail]) finalizeLogin(pendingEmail); else { err.innerText = "Clave incorrecta"; err.classList.remove('hidden'); } }
+        };
+
+        async function finalizeLogin(email) {
+            const isAdmin = config.adminEmails.includes(email) || config.marketingEmails.includes(email);
+            const btn = document.getElementById('login-btn'); const err = document.getElementById('login-error');
+            if (!isAdmin) {
+                btn.innerText = "VERIFICANDO..."; btn.disabled = true;
+                try {
+                    const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    const res = await fetch(`${SCRIPT_URL}?action=get_completed`, { signal: controller.signal });
+                    const data = await res.json();
+                    if (data.completed && data.completed.includes(email)) {
+                        err.innerText = "Este correo ya participó."; err.classList.remove('hidden'); btn.innerText = "INGRESAR"; btn.disabled = false; return;
+                    }
+                } catch (e) { console.log("Contingencia activada."); }
+            }
+            userEmail = email; localStorage.setItem('cgb_user_email', userEmail); setupUserRole(email); updateProgressUI();
+        }
+
+        function setupUserRole(e) { document.getElementById('nav-user-email').innerText = e; document.getElementById('main-nav').classList.remove('hidden'); const isAdm = config.adminEmails.includes(e) || config.marketingEmails.includes(e); if (isAdm) document.getElementById('staff-tabs').classList.remove('hidden'); showTeachers(); }
+        
+        window.refreshDashboard = async () => {
+            const btn = document.getElementById('btn-refresh-dashboard'); btn.innerText = "Cargando...";
+            try { const res = await fetch(`${SCRIPT_URL}?action=get_votes`); const data = await res.json(); cloudVotes = data.votes || []; document.getElementById('stat-total-votes').innerText = cloudVotes.length; renderMarketingCharts(); } catch(e) {} btn.innerText = "ACTUALIZAR";
+        };
+
+        function renderMarketingCharts() {
+            const cont = document.getElementById('marketing-charts-container'); cont.innerHTML = '';
+            const cats = ["Guardián Innovador", "Guardián Creativo", "Guardián Inspirador", "Guardián Comprometido"];
+            cats.forEach(t => {
+                const votes = cloudVotes.filter(v => v.category === t); if (votes.length === 0) return;
+                let h = `<div class="glass-panel p-4 rounded-2xl border border-slate-700/50"><h4>${t}</h4>`;
+                const counts = {}; votes.forEach(v => counts[v.nominee] = (counts[v.nominee] || 0) + 1);
+                Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 3).forEach(([n, c]) => { h += `<div class="text-[8px] flex justify-between mt-2"><span>${n}</span><span>${c}</span></div>`; });
+                cont.innerHTML += h + '</div>';
+            });
+        }
+
+        window.showDashboard = () => { hideAll(); document.getElementById('dashboard-screen').classList.remove('hidden'); window.refreshDashboard(); };
+        window.showTeachers = () => { hideAll(); document.getElementById('teachers-screen').classList.remove('hidden'); renderTeachersGrid(); window.scrollTo(0,0); };
+
+        function renderTeachersGrid() {
+            const grid = document.getElementById('teachers-grid'); grid.innerHTML = '';
+            (config.teachers[userLevel] || []).forEach(t => {
+                const isV = votedTeacherIds.includes(t.id);
+                grid.innerHTML += `<div onclick="${isV ? '' : `window.selectTeacher(${t.id})`}" class="teacher-card glass-panel p-4 rounded-[1.5rem] text-center ${isV ? 'voted' : ''}">
+                    <div class="rounded-full aspect-square bg-white flex items-center justify-center relative border-2 border-[#ea7125] p-2"><img src="guardianes.png" class="w-full h-auto object-contain"> ${isV ? '<div class="absolute inset-0 bg-green-500/30 rounded-full flex items-center justify-center text-[10px] font-black text-white">✓</div>' : ''}</div><h5 class="mt-3 font-bold text-xs uppercase italic">${t.name}</h5></div>`;
+            });
+        }
+
+        window.selectTeacher = (id) => { selectedTeacherId = id; const t = (config.teachers[userLevel]).find(x => x.id === id); document.getElementById('selected-teacher-name').innerText = t.name; hideAll(); document.getElementById('categories-screen').classList.remove('hidden'); renderCategories(); updateSelectionUI(); window.scrollTo(0,0); };
+        function renderCategories() {
+            const grid = document.getElementById('categories-grid'); grid.innerHTML = '';
+            (config.categories[userLevel] || config.categories['Default']).forEach(c => {
+                const sel = selectedCategoriesForCurrentTeacher.includes(c.id);
+                grid.innerHTML += `<div onclick="window.toggleCat(${c.id})" class="award-card glass-panel p-4 rounded-xl cursor-pointer text-center ${sel ? 'selected' : ''}"><div class="text-2xl">${c.icon}</div><h4 class="text-[9px] font-bold uppercase mt-2 italic">${c.title}</h4></div>`;
+            });
+        }
+
+        window.toggleCat = (id) => { selectedCategoriesForCurrentTeacher = selectedCategoriesForCurrentTeacher.includes(id) ? [] : [id]; renderCategories(); updateSelectionUI(); };
+        function updateSelectionUI() { const sel = selectedCategoriesForCurrentTeacher.length > 0; document.getElementById('floating-btn-container').style.bottom = sel ? "0px" : "-150px"; document.getElementById('confirm-selection-btn').disabled = !sel; document.getElementById('multi-selection-counter').innerText = `${selectedCategoriesForCurrentTeacher.length} / 1`; }
+
+        window.saveVotesToCloud = () => {
+            const t = config.teachers[userLevel].find(x => x.id === selectedTeacherId);
+            const c = (config.categories[userLevel] || config.categories['Default']).find(x => x.id === selectedCategoriesForCurrentTeacher[0]);
+            
+            const urlParams = `action=vote&user=${encodeURIComponent(userEmail)}&level=${encodeURIComponent(userLevel)}&nominee=${encodeURIComponent(t.name)}&category=${encodeURIComponent(c.title)}`;
+            fetch(`${SCRIPT_URL}?${urlParams}`, { mode: 'no-cors' });
+
+            votedTeacherIds.push(selectedTeacherId); localStorage.setItem('cgb_voted_teachers', JSON.stringify(votedTeacherIds));
+            try{document.getElementById('vote-sound').play();}catch(e){} confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            updateProgressUI(); selectedCategoriesForCurrentTeacher = []; updateSelectionUI(); hideAll(); document.getElementById('success-screen').classList.remove('hidden');
+        };
+
+        function updateProgressUI() { const c = votedTeacherIds.length; document.getElementById('voted-count').innerText = `${c} nominaciones`; if (c >= 1) document.getElementById('final-submit-container').classList.remove('hidden'); }
+        window.finalizeVotation = () => {
+            fetch(`${SCRIPT_URL}?action=complete&email=${encodeURIComponent(userEmail)}`, { mode: 'no-cors' });
+            confetti({ particleCount: 300, spread: 160 }); document.getElementById('final-user-email').innerText = userEmail;
+            hideAll(); document.getElementById('main-nav').classList.add('hidden'); document.getElementById('final-screen').classList.remove('hidden'); window.scrollTo(0,0);
+        };
+
+        function hideAll() { ['level-selection-screen','login-screen','dashboard-screen','teachers-screen','categories-screen','success-screen','final-screen'].forEach(s => { if(document.getElementById(s)) document.getElementById(s).classList.add('hidden'); }); }
+        window.toggleAudio = () => { const a = document.getElementById('bg-music'); a.paused ? a.play() : a.pause(); };
+        window.resetLoginForm = () => { currentLoginStep = 1; document.getElementById('student-email').classList.remove('hidden'); document.getElementById('staff-password').classList.add('hidden'); document.getElementById('login-btn').innerText = "INGRESAR"; document.getElementById('back-to-email-btn').classList.add('hidden'); };
+        window.exitApp = () => { localStorage.clear(); location.reload(); };
+    </script>
+</body>
+</html>
