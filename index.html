@@ -227,7 +227,8 @@
 
         <section id="login-screen" class="hidden section-container animate-fade-in text-center py-12">
             <button onclick="window.resetToLevels()" class="mb-6 text-slate-400 hover:text-white flex items-center text-xs font-bold uppercase mx-auto">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg> Regresar
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+                Regresar
             </button>
             <div class="max-w-md mx-auto glass-panel p-8 rounded-3xl relative mt-4">
                 <div class="absolute -top-12 left-1/2 transform -translate-x-1/2"><div id="login-mascot" class="w-24 h-24 mascot-sphere border-4 border-[#032366]"></div></div>
@@ -363,11 +364,20 @@
                     { id: 605, title: "Guardián Servicial", icon: "🛠️" }
                 ],
                 'Bachillerato': [
-                    { id: 301, title: "Guardián Innovador", icon: "💡" }, { id: 302, title: "Guardián Tecnológico", icon: "💻" },
-                    { id: 303, title: "Guardián Dinámico", icon: "⚡" }, { id: 304, title: "Guardián Analítico", icon: "📊" },
-                    { id: 305, title: "Guardián Puntual", icon: "⏰" }, { id: 306, title: "Guardián Integrador", icon: "🧩" },
-                    { id: 307, title: "Guardián Entusiasta", icon: "🎉" }, { id: 308, title: "Guardián Mediador", icon: "⚖️" },
-                    { id: 309, title: "Guardián Solidario", icon: "🤝" }, { id: 310, title: "Guardián Íntegro", icon: "🛡️" }
+                    { id: 301, name: "Aguilar Belmontes Maritza" }, { id: 302, name: "López Rojas Alejandra Denisse" },
+                    { id: 303, name: "Pacheco Claudia" }, { id: 304, name: "De la Torre González Eréndira Anaí" },
+                    { id: 305, name: "Medellín Hernández Gerardo" }, { id: 306, name: "Miranda Peñaloza Citlalli Sugey" },
+                    { id: 307, name: "Rodríguez Sánchez Luis Felipe" }, { id: 308, name: "Beatriz Adriana Muñoz" },
+                    { id: 309, name: "Miguel Angel Morales Cadena" }, { id: 310, name: "Sarai Jocabed Gutierrez Perez" },
+                    { id: 311, name: "Rebeca Sainz" }, { id: 312, name: "Vargas Tapia Jorge" },
+                    { id: 313, name: "López Méndez José Ricardo" }, { id: 314, name: "Galván Reséndiz Juan Fernando" },
+                    { id: 315, name: "Estrada Sandoval José Antonio" }, { id: 316, name: "Ordaz Vega Alejandra Yaritza" },
+                    { id: 317, name: "Andrea Gomez Morales" }, { id: 318, name: "Ledesma Mariana" },
+                    { id: 319, name: "Guerrero Emma" }, { id: 320, name: "González Diana" },
+                    { id: 321, name: "Maria del Pilar Perez Miranda" }, { id: 322, name: "Carmen Morales" },
+                    { id: 323, name: "Irving Spíndola" }, { id: 324, name: "Rodrigo Mendiola" },
+                    { id: 325, name: "Francisco Javier Córdova" }, { id: 326, name: "Beatriz Rodríguez Rivera" },
+                    { id: 328, name: "Karla Morales" }
                 ],
                 'Default': [{ id: 901, title: "Excelencia", icon: "🏆" }]
             },
@@ -424,7 +434,7 @@
                     { id: 321, name: "Maria del Pilar Perez Miranda" }, { id: 322, name: "Carmen Morales" },
                     { id: 323, name: "Irving Spíndola" }, { id: 324, name: "Rodrigo Mendiola" },
                     { id: 325, name: "Francisco Javier Córdova" }, { id: 326, name: "Beatriz Rodríguez Rivera" },
-                    { id: 327, name: "Fernando Herrera" }, { id: 328, name: "Karla Morales" }
+                    { id: 328, name: "Karla Morales" }
                 ],
                 'Administrativos': [
                     { id: 501, name: "Marichuy" }, { id: 502, name: "Diana" }, { id: 503, name: "Sergio" },
@@ -601,8 +611,6 @@
                     if (countEl) countEl.innerText = cloudVotes.length;
                     
                     renderMarketingCharts();
-                } else {
-                    alert("Aún no has configurado el enlace de Google Sheets (SCRIPT_URL)");
                 }
             } catch(e) {
                 console.error("Error actualizando panel:", e);
