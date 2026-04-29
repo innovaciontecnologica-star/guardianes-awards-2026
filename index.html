@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Guardianes Awards 2026 | Colegio Gran Bretaña</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Importación de Century Gothic -->
     <link href="https://fonts.cdnfonts.com/css/century-gothic" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
@@ -127,6 +130,7 @@
 </head>
 <body class="min-h-screen flex flex-col" ontouchstart="">
 
+    <!-- SPLASH SCREEN -->
     <section id="splash-screen" class="fixed inset-0 z-[300] bg-[#032366] flex flex-col items-center justify-center">
         <div class="w-32 h-32 md:w-48 md:h-48 animate-heartbeat text-[#ea7125]">
             <div id="splash-shield" class="w-full h-full"></div>
@@ -134,6 +138,7 @@
         <p class="text-[#ea7125] text-xs md:text-sm mt-10 uppercase tracking-[0.4em] font-bold animate-pulse">Cargando...</p>
     </section>
 
+    <!-- Audios -->
     <audio id="bg-music" loop preload="auto">
         <source src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=cinematic-time-lapse-115672.mp3" type="audio/mpeg">
     </audio>
@@ -152,7 +157,7 @@
     <nav id="main-nav" class="hidden sticky top-0 z-50 glass-panel px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
             <div id="nav-shield-logo" class="w-8 h-8 md:w-10 md:h-10 bg-[#003366] rounded-full flex items-center justify-center border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]"></div>
-            <h1 class="text-sm md:text-xl font-bold tracking-tighter uppercase text-white hidden sm:block italic">Guardianes <span class="brand-gradient">Awards</span></h1>
+            <h1 class="text-sm md:text-xl font-bold tracking-tighter uppercase text-white hidden sm:block">Guardianes <span class="brand-gradient">Awards</span></h1>
         </div>
         
         <div class="flex items-center space-x-3 md:space-x-6">
@@ -172,16 +177,17 @@
 
     <main id="app-container" class="w-full flex-grow flex flex-col items-center overflow-x-hidden">
         
+        <!-- Pantalla de Bienvenida -->
         <section id="intro-screen" class="fixed inset-0 z-[100] flex flex-col items-center bg-[#032366] overflow-y-auto">
             <div class="intro-content-wrapper animate-fade-in w-full flex flex-col items-center py-10 px-6 text-center">
                 <div class="w-56 md:w-80 mb-8 bg-white p-4 md:p-6 rounded-2xl shadow-[0_0_25px_rgba(255,255,255,0.15)] flex justify-center items-center">
                     <img src="Logo.png" alt="Colegio Gran Bretaña" class="w-full h-auto" onerror="this.src='https://via.placeholder.com/400x120.png?text=Logo+CGB&bg=ffffff&text_color=032366'">
                 </div>
                 <div class="space-y-4 text-center mb-8">
-                    <p class="text-slate-400 text-xs md:text-lg uppercase tracking-[0.3em] font-light text-center">Bienvenido a los</p>
-                    <h2 class="text-3xl md:text-5xl font-black brand-gradient uppercase tracking-tight text-center italic">Guardianes Awards</h2>
+                    <p class="text-slate-400 text-xs md:text-lg uppercase tracking-[0.3em] font-light">Bienvenido a los</p>
+                    <h2 class="text-3xl md:text-5xl font-black brand-gradient uppercase tracking-tight">Guardianes Awards</h2>
                 </div>
-                <div class="space-y-6 text-slate-300 text-sm md:text-xl font-medium max-w-2xl text-center">
+                <div class="space-y-6 text-slate-300 text-sm md:text-xl font-medium max-w-2xl">
                     <p>Un guardián CGB es un educador comprometido que lidera con el ejemplo. Con visión integral, acompaña a sus alumnos, fomenta la sana convivencia y actúa con ética, responsabilidad y orgullo institucional.</p>
                     <p>Hoy nos vestimos de gala para reconocer esa entrega. Estos premios son un tributo a tu excelencia y a la huella imborrable que dejas en nuestra comunidad.</p>
                 </div>
@@ -195,6 +201,7 @@
             </div>
         </section>
 
+        <!-- Selección de Nivel -->
         <section id="level-selection-screen" class="hidden section-container animate-fade-in text-center py-8">
             <h2 class="text-2xl md:text-5xl font-black text-white uppercase brand-gradient mb-8">Selecciona tu Área</h2>
             <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-6 gap-4">
@@ -206,49 +213,50 @@
                     <div id="mascot-prim" class="w-12 h-12 mascot-sphere border-blue-400"></div>
                     <h3 class="text-[10px] font-bold uppercase">Primaria</h3>
                 </div>
-                <div onclick="window.selectLevel('Secundaria')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3">
+                <div onclick="window.selectLevel('Secundaria')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3 text-center">
                     <div id="mascot-sec" class="w-12 h-12 mascot-sphere border-orange-400"></div>
-                    <h3 class="text-[10px] font-bold uppercase">Secundaria</h3>
+                    <h3 class="text-[10px] font-bold uppercase text-center">Secundaria</h3>
                 </div>
-                <div onclick="window.selectLevel('Bachillerato')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3">
-                    <div id="mascot-prep" class="w-12 h-12 mascot-sphere border-purple-400"></div>
-                    <h3 class="text-[10px] font-bold uppercase">Bachillerato</h3>
+                <div onclick="window.selectLevel('Bachillerato')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3 text-center">
+                    <div id="mascot-prep" class="w-12 h-12 mascot-sphere border-purple-400 text-center"></div>
+                    <h3 class="text-[10px] font-bold uppercase text-center">Bachillerato</h3>
                 </div>
-                <div onclick="window.selectLevel('Administrativos')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3">
+                <div onclick="window.selectLevel('Administrativos')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-3 text-center">
                     <div id="mascot-admin" class="w-12 h-12 mascot-sphere border-slate-400"></div>
-                    <h3 class="text-[10px] font-bold uppercase">Administración</h3>
+                    <h3 class="text-[10px] font-bold uppercase text-center">Administración</h3>
                 </div>
-                <div onclick="window.selectLevel('Intendencia')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-2">
+                <div onclick="window.selectLevel('Intendencia')" class="level-card glass-panel p-4 rounded-[2rem] flex flex-col items-center justify-center space-y-2 border-cyan-500/50">
                     <div id="mascot-mantenimiento" class="w-12 h-12 mascot-sphere border-cyan-400"></div>
                     <h3 class="text-[10px] font-bold uppercase">Intendencia</h3>
                 </div>
             </div>
         </section>
 
+        <!-- Login -->
         <section id="login-screen" class="hidden section-container animate-fade-in text-center py-12">
             <button onclick="window.resetToLevels()" class="mb-6 text-slate-400 hover:text-white flex items-center text-xs font-bold uppercase mx-auto">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
-                Regresar
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg> Regresar
             </button>
             <div class="max-w-md mx-auto glass-panel p-8 rounded-3xl relative mt-4">
                 <div class="absolute -top-12 left-1/2 transform -translate-x-1/2"><div id="login-mascot" class="w-24 h-24 mascot-sphere border-4 border-[#032366]"></div></div>
-                <div class="pt-12 space-y-2">
+                <div class="pt-12 space-y-2 text-center">
                     <h2 id="login-level-title" class="text-xl md:text-2xl font-black text-white uppercase italic">Guardianes Awards</h2>
                     <p class="text-slate-500 text-[10px] uppercase font-bold">Validación Institucional</p>
                 </div>
                 <div class="mt-8 space-y-4">
                     <input type="email" id="student-email" placeholder="correo@cgb.edu.mx" class="w-full bg-[#032366]/50 border border-slate-700 rounded-xl px-4 py-4 text-center text-white outline-none focus:border-[#ea7125]">
                     <input type="password" id="staff-password" placeholder="Contraseña Especial" class="w-full bg-[#032366]/50 border border-slate-700 rounded-xl px-4 py-4 text-center text-white hidden outline-none focus:border-[#ea7125]">
-                    <p id="login-error" class="text-red-400 text-[10px] hidden font-bold uppercase">Datos incorrectos</p>
+                    <p id="login-error" class="text-red-400 text-[10px] hidden font-bold uppercase text-center">Datos incorrectos</p>
                     <button id="login-btn" onclick="window.handleLogin()" class="w-full bg-[#ea7125] text-white font-black py-4 rounded-xl hover:bg-[#c25916] transition-all tracking-widest shadow-lg uppercase">INGRESAR</button>
                     <button id="back-to-email-btn" onclick="window.resetLoginForm()" class="text-[10px] text-slate-400 underline w-full text-center hidden mt-2 uppercase font-bold">Cambiar Correo</button>
                 </div>
             </div>
         </section>
 
+        <!-- Admin Dashboard -->
         <section id="dashboard-screen" class="hidden section-container animate-fade-in py-6">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4">
-                <div class="text-left md:text-left">
+                <div class="text-left text-center md:text-left">
                     <h2 class="text-2xl md:text-3xl font-black brand-gradient uppercase italic">Panel de Control</h2>
                     <p class="text-slate-400 text-xs uppercase font-bold">Conexión con Google Sheets</p>
                 </div>
@@ -257,7 +265,7 @@
                     <button onclick="window.exportToExcel()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-[10px] px-4 py-2 rounded-lg border border-emerald-500/30 uppercase font-bold">Excel</button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 xs:grid-cols-3 gap-4 mb-8">
+            <div class="grid grid-cols-1 xs:grid-cols-3 gap-4 mb-8 text-center">
                 <div class="glass-panel p-4 rounded-2xl border-l-4 border-[#ea7125]"><p class="text-[9px] uppercase text-slate-500 font-bold">Votos</p><p id="stat-total-votes" class="text-2xl font-black text-white">0</p></div>
                 <div class="glass-panel p-4 rounded-2xl border-l-4 border-emerald-500"><p class="text-[9px] uppercase text-slate-500 font-bold">Servidor</p><p class="text-xl font-black text-white italic">Sheets API</p></div>
                 <div class="glass-panel p-4 rounded-2xl border-l-4 border-green-500"><p class="text-[9px] uppercase text-slate-500 font-bold">Estado</p><p class="text-xl font-black text-green-500">ONLINE</p></div>
@@ -265,7 +273,8 @@
             <div id="marketing-charts-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
         </section>
 
-        <section id="teachers-screen" class="hidden section-container animate-fade-in py-6">
+        <!-- Lista de Maestros -->
+        <section id="teachers-screen" class="hidden section-container animate-fade-in py-6 text-center">
             <div class="mb-6 flex justify-between items-end border-b border-white/5 pb-4">
                 <div class="text-left"><h3 class="text-lg md:text-2xl font-black text-white uppercase italic">Elegir <span class="brand-gradient">Guardián</span></h3><p class="text-[10px] md:text-xs text-slate-400">Reconoce a tus compañeros.</p></div>
                 <div class="bg-slate-800/50 px-4 py-2 rounded-lg border border-slate-700"><span id="voted-count" class="text-xs md:text-sm font-bold text-[#ea7125]">0 nominaciones</span></div>
@@ -274,6 +283,7 @@
             <div id="final-submit-container" class="hidden fixed bottom-6 left-6 right-6 z-40"><button onclick="window.finalizeVotation()" class="shimmer bg-[#ea7125] text-white font-black py-4 px-8 rounded-2xl shadow-xl text-xs md:text-lg tracking-widest uppercase w-full max-w-md mx-auto">ENVIAR MIS NOMINACIONES</button></div>
         </section>
 
+        <!-- Selección de Categoría -->
         <section id="categories-screen" class="hidden section-container animate-fade-in py-6">
             <div class="flex justify-between items-center mb-6">
                 <button onclick="window.showTeachers()" class="bg-white/5 text-slate-400 hover:text-white flex items-center text-[10px] font-bold py-2 px-3 rounded-xl border border-white/10">
@@ -281,50 +291,58 @@
                 </button>
                 <div class="bg-[#ea7125]/10 text-[#ea7125] px-4 py-2 rounded-full border border-[#ea7125]/30"><span id="multi-selection-counter" class="text-xs md:text-sm font-black">0 / 1</span></div>
             </div>
-            <div class="mb-8 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6 glass-panel p-6 rounded-[2rem]">
+            <div class="mb-8 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6 glass-panel p-6 rounded-[2rem] text-center md:text-left">
                 <div id="selected-teacher-avatar" class="w-20 h-20 md:w-28 md:h-28 rounded-full border-2 border-[#d4af37] flex items-center justify-center bg-[#032366]"></div>
                 <div class="text-center md:text-left">
                     <h3 id="selected-teacher-name" class="text-lg md:text-3xl font-black text-white uppercase italic leading-tight">Nombre</h3>
                     <p class="text-xs md:text-md text-slate-400 uppercase gold-gradient font-bold italic">Nominación del Guardian</p>
                 </div>
             </div>
+            
             <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 pb-32" id="categories-grid"></div>
         </section>
 
+        <!-- Éxito de Voto -->
         <section id="success-screen" class="hidden section-container py-20 text-center animate-fade-in">
-            <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50 shadow-lg"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
-            <h2 class="text-2xl md:text-4xl font-black text-white mb-6 uppercase italic">Voto Almacenado</h2>
-            <button onclick="window.showTeachers()" class="bg-[#ea7125] text-white font-black py-4 px-12 rounded-xl shadow-lg uppercase text-sm">Regresar a la Lista</button>
+            <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50 shadow-lg text-center"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+            <h2 class="text-2xl md:text-4xl font-black text-white mb-6 uppercase italic text-center">Voto Almacenado</h2>
+            <button onclick="window.showTeachers()" class="bg-[#ea7125] text-white font-black py-4 px-12 rounded-xl shadow-lg uppercase text-sm text-center">Regresar a la Lista</button>
         </section>
 
-        <section id="final-screen" class="hidden section-container py-20 text-center animate-fade-in">
-            <h2 class="text-3xl md:text-6xl font-black brand-gradient mb-4 uppercase italic">¡Gracias Guardián!</h2>
-            <p class="text-slate-400 text-sm md:text-lg mb-8 font-medium">Tus votos están seguros en la nube.</p>
+        <!-- Pantalla Final -->
+        <section id="final-screen" class="hidden section-container py-20 text-center animate-fade-in text-center">
+            <h2 class="text-3xl md:text-6xl font-black brand-gradient mb-4 uppercase italic text-center">¡Gracias Guardián!</h2>
+            <p class="text-slate-400 text-sm md:text-lg mb-8 font-medium text-center">Tus votos están seguros en la nube.</p>
             <div class="max-w-md mx-auto glass-panel p-8 rounded-2xl text-center">
-                <p id="final-user-email" class="text-base md:text-lg font-bold text-[#ea7125] mb-6"></p>
+                <p id="final-user-email" class="text-base md:text-lg font-bold text-[#ea7125] mb-6 text-center"></p>
                 <div class="professional-credit mt-8 text-center border-t border-white/10 pt-6">
-                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Colegio Gran Bretaña</p>
-                    <p class="text-[#ea7125] text-xs uppercase font-bold tracking-wider mt-1">Innovación Tecnológica</p>
-                    <p class="text-slate-500 text-[10px] mt-2 italic">By L.I.E. Arturo Palacios González | v1.0</p>
+                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest text-center">Colegio Gran Bretaña</p>
+                    <p class="text-[#ea7125] text-xs uppercase font-bold tracking-wider mt-1 text-center">Innovación Tecnológica</p>
+                    <p class="text-slate-500 text-[10px] mt-2 italic text-center">By L.I.E. Arturo Palacios González | v1.0</p>
                 </div>
             </div>
-            <button onclick="window.exitApp()" class="mt-10 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/50 font-bold py-4 px-12 rounded-full uppercase text-xs">Cerrar Sesión</button>
+            <button onclick="window.exitApp()" class="mt-10 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/50 font-bold py-4 px-12 rounded-full uppercase text-xs text-center">Cerrar Sesión</button>
         </section>
     </main>
 
+    <!-- Botón Flotante de Voto (Parche para iPhone/Android) -->
     <div id="floating-btn-container" class="fixed left-0 w-full z-[9999] flex justify-center transition-all duration-300 bg-gradient-to-t from-[#032366] via-[#032366] to-transparent pt-12" style="bottom: -150px; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));">
         <button id="confirm-selection-btn" onclick="window.saveVotesToCloud()" class="bg-[#ea7125] text-white font-black py-4 px-10 md:py-5 md:px-12 rounded-full shadow-[0_0_30px_rgba(234,113,37,0.8)] uppercase text-sm tracking-widest w-[85%] max-w-xs text-center cursor-pointer active:scale-95 transition-transform shimmer" style="touch-action: manipulation;" disabled>
             CONFIRMAR VOTO
         </button>
     </div>
 
+    <!-- Pie de página -->
     <footer class="py-4 md:py-6 border-t border-slate-800/50 text-center bg-[#032366]/80 backdrop-blur-sm mt-auto">
-        <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[8px] md:text-[10px]">Colegio Gran Bretaña</p>
-        <p class="text-[#ea7125] text-[8px] md:text-[10px] uppercase font-bold opacity-90 mt-1">Innovación Tecnológica</p>
-        <p class="text-slate-500 text-[7px] md:text-[8px] mt-1.5 italic">By L.I.E. Arturo Palacios González | v1.0</p>
+        <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-[8px] md:text-[10px] text-center">Colegio Gran Bretaña</p>
+        <p class="text-[#ea7125] text-[8px] md:text-[10px] uppercase font-bold opacity-90 mt-1 text-center">Innovación Tecnológica</p>
+        <p class="text-slate-500 text-[7px] md:text-[8px] mt-1.5 italic text-center">By L.I.E. Arturo Palacios González | v1.0</p>
     </footer>
 
     <script>
+        // ==========================================
+        // CONFIGURACIÓN DE BASE DE DATOS GOOGLE SHEETS
+        // ==========================================
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCPfxka5AyBMvcC9hJUeGVYvdSBWTvz9QcnpXOl7LccWfYFaPnN04d9onj5PUGhsn3hA/exec"; 
 
         const shieldSVG = `<svg class="w-full h-full p-2 text-[#d4af37] shield-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 12c-2.67 0-5-1.33-5-4 0-1.11.44-2.11 1.16-2.84.97.97 2.29 1.57 3.84 1.57 1.55 0 2.87-.6 3.84-1.57.72.73 1.16 1.73 1.16 2.84 0 2.67-2.33 4-5 4z"/></svg>`;
@@ -364,20 +382,11 @@
                     { id: 605, title: "Guardián Servicial", icon: "🛠️" }
                 ],
                 'Bachillerato': [
-                    { id: 301, name: "Aguilar Belmontes Maritza" }, { id: 302, name: "López Rojas Alejandra Denisse" },
-                    { id: 303, name: "Pacheco Claudia" }, { id: 304, name: "De la Torre González Eréndira Anaí" },
-                    { id: 305, name: "Medellín Hernández Gerardo" }, { id: 306, name: "Miranda Peñaloza Citlalli Sugey" },
-                    { id: 307, name: "Rodríguez Sánchez Luis Felipe" }, { id: 308, name: "Beatriz Adriana Muñoz" },
-                    { id: 309, name: "Miguel Angel Morales Cadena" }, { id: 310, name: "Sarai Jocabed Gutierrez Perez" },
-                    { id: 311, name: "Rebeca Sainz" }, { id: 312, name: "Vargas Tapia Jorge" },
-                    { id: 313, name: "López Méndez José Ricardo" }, { id: 314, name: "Galván Reséndiz Juan Fernando" },
-                    { id: 315, name: "Estrada Sandoval José Antonio" }, { id: 316, name: "Ordaz Vega Alejandra Yaritza" },
-                    { id: 317, name: "Andrea Gomez Morales" }, { id: 318, name: "Ledesma Mariana" },
-                    { id: 319, name: "Guerrero Emma" }, { id: 320, name: "González Diana" },
-                    { id: 321, name: "Maria del Pilar Perez Miranda" }, { id: 322, name: "Carmen Morales" },
-                    { id: 323, name: "Irving Spíndola" }, { id: 324, name: "Rodrigo Mendiola" },
-                    { id: 325, name: "Francisco Javier Córdova" }, { id: 326, name: "Beatriz Rodríguez Rivera" },
-                    { id: 328, name: "Karla Morales" }
+                    { id: 301, title: "Guardián Innovador", icon: "💡" }, { id: 302, title: "Guardián Tecnológico", icon: "💻" },
+                    { id: 303, title: "Guardián Dinámico", icon: "⚡" }, { id: 304, title: "Guardián Analítico", icon: "📊" },
+                    { id: 305, title: "Guardián Puntual", icon: "⏰" }, { id: 306, title: "Guardián Integrador", icon: "🧩" },
+                    { id: 307, title: "Guardián Entusiasta", icon: "🎉" }, { id: 308, title: "Guardián Mediador", icon: "⚖️" },
+                    { id: 309, title: "Guardián Solidario", icon: "🤝" }, { id: 310, title: "Guardián Íntegro", icon: "🛡️" }
                 ],
                 'Default': [{ id: 901, title: "Excelencia", icon: "🏆" }]
             },
@@ -441,7 +450,9 @@
                     { id: 504, name: "Brenda" }, { id: 505, name: "Ale" }, { id: 506, name: "Litsy" },
                     { id: 507, name: "Jessy" }, { id: 508, name: "Eri" }, { id: 509, name: "Bea" },
                     { id: 510, name: "Graciela" }, { id: 511, name: "Aline" }, { id: 512, name: "Cristi" },
-                    { id: 513, name: "Liss" }, { id: 514, name: "Emma" }, { id: 515, name: "Rach" }
+                    { id: 513, name: "Liss" }, { id: 514, name: "Emma" }, { id: 515, name: "Rach" },
+                    { id: 516, name: "Verónica Torres" }, { id: 517, name: "Heryca Colmenares" },
+                    { id: 518, name: "Homero Mendoza" }, { id: 519, name: "Irving Spindola" }
                 ],
                 'Intendencia': [
                     { id: 601, name: "Luis" }, { id: 602, name: "Memo" }, { id: 603, name: "Judith" },
@@ -643,7 +654,7 @@
                 
                 Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 3).forEach(([name, count]) => {
                     const percentage = Math.round((count / votes.length) * 100);
-                    html += `<div class="space-y-1 text-left"><div class="flex justify-between text-[8px] uppercase"><span>${name}</span><span class="text-[#ea7125]">${count}</span></div><div class="h-1 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-[#ea7125]" style="width: ${percentage}%"></div></div></div>`;
+                    html += `<div class="space-y-1 text-left"><div class="flex justify-between text-[8px] uppercase"><span>${name}</span><span class="text-[#ea7125]">${count}</span></div><div class="h-1 bg-slate-900 rounded-full overflow-hidden text-center"><div class="h-full bg-[#ea7125]" style="width: ${percentage}%"></div></div></div>`;
                 });
                 
                 html += `</div></div>`; 
